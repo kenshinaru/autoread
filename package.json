@@ -1,0 +1,20 @@
+{
+  "name": "base",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [
+    "Base",
+    "Bot WhatsApp"
+  ],
+  "author": "Luthfi Joestars",
+  "license": "MIT",
+  "description": "Bot Autoread Story WhatsApp",
+  "dependencies": {
+    "baileys": "npm:@neoxr/baileys@latest",
+    "chalk": "*"
+  }
+}

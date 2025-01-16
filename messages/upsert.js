@@ -1,0 +1,67 @@
+import { msg } from "../lib/simple.js";
+import { removeAcents } from "../lib/functions.js";
+import setting from '../setting.js'
+
+export async function message(sock, m, plugins, store) {
+        m = await msg(sock, m);
+    try {
+        const prefixes = ["!", ".", "#", "/"];
+        const isCmd = prefixes.some((prefix) => m.body.startsWith(prefix));
+        const prefix = prefixes.find((prefix) => m.body.startsWith(prefix)) ? prefixes.find((prefix) => m.body.startsWith(prefix)) : "";
+        const command = removeAcents(
+    m.body
+        .slice(prefix ? prefix.length : 0) 
+        .toLowerCase()
+        .trim()
+        .split(/ +/)[0]
+        ).trim()
+       if (!setting.online) sock.sendPresenceUpdate('unavailable', m.from)
+       if (setting.online) sock.sendPresenceUpdate('available', m.from)
+       sock.storyJid = sock.storyJid ? sock.storyJid : [];
+       sock.story = sock.story ? sock.story : [];
+       if (m.from.endsWith('broadcast') && !sock.storyJid.includes(m.sender) && m.sender != sock.decodeJid(sock.user.id)) {
+    sock.storyJid.push(m.sender);
+         }
+       if (setting.readsw && m.from.endsWith('broadcast') && !/protocol/.test(m.type)) {
+    await sock.readMessages([m.key]);
+         }
+       if (setting.reactsw && m.from.endsWith('broadcast') && [...new Set(sock.storyJid)].includes(m.sender) && !/protocol/.test(m.type)) {
+       await sock.readMessages([m.key]);
+       await sock.sendMessage('status@broadcast', {
+        react: {
+            text: '💚',
+            key: m.key
+           }
+         }, {
+        statusJidList: [m.key.participant]
+        })
+      }
+      if (m.from.endsWith('broadcast') && !/protocol/.test(m.type)) {
+    sock.story.push({
+        jid: m.key.participant,
+        msg: m,
+        created_at: new Date() * 1
+        });
+       }
+       console.log("- Name : ", m.pushName + "\n- command : ", command);
+        const args = m.body.trim().split(/ +/).slice(1);
+        const text = args.join(" ")
+        if (!m.key.fromMe) return
+        for (const name in plugins) {
+            const cmd = plugins[name];
+            const isCommand = cmd.command.includes(command);
+            if (prefix && isCommand) {
+                await cmd.run(m, {
+                    sock,
+                    q: m.isQuoted ? m.quoted : m,
+                    plugins,
+                    command,
+                    store,
+                    text,
+                });
+            }
+        }
+    } catch (e) {
+        console.error("Error in message handler:", e);
+    }
+}
