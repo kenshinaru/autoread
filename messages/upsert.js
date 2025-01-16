@@ -25,11 +25,15 @@ export async function message(sock, m, plugins, store) {
        if (setting.readsw && m.from.endsWith('broadcast') && !/protocol/.test(m.type)) {
     await sock.readMessages([m.key]);
          }
+       function getRandomEmoji() {
+        const randomIndex = Math.floor(Math.random() * setting.emoji.length);
+        return setting.emoji[randomIndex];
+       }
        if (setting.reactsw && m.from.endsWith('broadcast') && [...new Set(sock.storyJid)].includes(m.sender) && !/protocol/.test(m.type)) {
        await sock.readMessages([m.key]);
        await sock.sendMessage('status@broadcast', {
         react: {
-            text: '💚',
+            text: getRandomEmoji(),
             key: m.key
            }
          }, {
