@@ -3,5 +3,5 @@ export default {
   readsw: true,
   reactsw: false,
   online: false,
-  emojis: ["❤️", "💛", "💚", "💙", "💜"],
+  emoji: ["❤️", "💛", "💚", "💙", "💜"],
 }
