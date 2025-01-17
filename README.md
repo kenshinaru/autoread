@@ -8,6 +8,7 @@ Bot WhatsApp untuk membaca status/story secara otomatis dengan berbagai fitur ta
 - Reaksi otomatis ke story.
 - Kontrol status online.
 - Reaksi dengan emoji khusus.
+- Reaksi story && Read story
 
 ## 🛠️ Konfigurasi
 Edit file `setting.js`:
