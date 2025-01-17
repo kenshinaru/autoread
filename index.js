@@ -1,4 +1,8 @@
-const { spawn } = require('child_process'), path = require('path');
+import { spawn } from 'child_process';
+import { fileURLToPath } from 'url';
+import path from 'path';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const unhandledRejections = new Map();
 process.on('unhandledRejection', (reason, promise) => {
@@ -15,14 +19,14 @@ process.on('Something went wrong', function (err) {
 function start() {
 	let args = [path.join(__dirname, './client.js'), ...process.argv.slice(2)];
 	let p = spawn(process.argv[0], args, {
-			stdio: ['inherit', 'inherit', 'inherit', 'ipc']
-		})
+		stdio: ['inherit', 'inherit', 'inherit', 'ipc']
+	})
 		.on('message', data => {
-			if (data == 'reset') {
+			if (data === 'reset') {
 				p.kill();
 			}
 		})
-		.on('exit', code => {
+		.on('exit', () => {
 			start();
 		});
 }
