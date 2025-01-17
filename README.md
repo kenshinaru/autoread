@@ -1,6 +1,6 @@
 # WhatsApp AutoRead Story Bot
 
-Bot WhatsApp untuk membaca status/story secara otomatis dengan berbagai fitur tambahan.
+Bot WhatsApp self untuk membaca status/story secara otomatis dengan berbagai fitur tambahan.
 
 ## 📋 Fitur
 - Auto Read Story.
@@ -9,6 +9,16 @@ Bot WhatsApp untuk membaca status/story secara otomatis dengan berbagai fitur ta
 - Kontrol status online.
 - Reaksi dengan emoji khusus.
 - Reaksi story && Read story
+- Upload story (image/text/audio)
+- Get story
+- List story
+- Eval / Exec
+
+## 👾 Commmand
+- .upsw (upload story whatsapp)
+- .listsw (menampilkan list story tersimpan)
+- .getsw (mengambil salah satu story tersimpan)
+- =>, >, $ (exec dan eval command)
 
 ## 🛠️ Konfigurasi
 Edit file `setting.js`:
