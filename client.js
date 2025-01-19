@@ -89,7 +89,7 @@ const Starting = async() => {
 			console.log("Connected")
             await sock.reply(
   sock.decodeJid(sock.user.id),
-  `— *CONNECTION OPEN* —\n\nStatus:\n- Anticall : ${setting.anticall ? 'ON' : 'OFF'}\n- ReadSW : ${setting.readsw ? 'ON' : 'OFF'}\n- ReactSW : ${setting.reactsw ? 'ON' : 'OFF'}\n- Online : ${setting.online ? 'ON' : 'OFF'}`)
+  `— *CONNECTION OPEN* —\n\nStatus:\n- Anticall : ${setting.anticall ? 'ON' : 'OFF'}\n- Autotyping : ${setting.autotyping ? 'ON' : 'OFF'}\n- Readchat : ${setting.readchat ? 'ON' : 'OFF'}\n- ReadSW : ${setting.readsw ? 'ON' : 'OFF'}\n- ReactSW : ${setting.reactsw ? 'ON' : 'OFF'}\n- Online : ${setting.online ? 'ON' : 'OFF'}`)
 		}
 	})
 
