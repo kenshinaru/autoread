@@ -5,7 +5,7 @@ import chalk from "chalk"
 import { fileURLToPath } from "url";
 import { message } from "./messages/upsert.js";
 import { WAConnection } from "./lib/whatsapp.js";
-import { useMultiFileAuthState, makeCacheableSignalKeyStore, jidNormalizedUser, makeInMemoryStore } from "baileys";
+import baileys from "baileys";
 import readline from "readline"
 import setting from './setting.js'
 import NodeCache from "node-cache"
@@ -14,7 +14,7 @@ const pathStories = `./session/stories.json`
 const pathContacts = `./session/contacts.json`
 const msgRetryCounterCache = new NodeCache();
 const logger = pino({ level: "silent" }).child({ level: "silent" })
-const store = makeInMemoryStore({
+const store = baileys.makeInMemoryStore({
   logger
 });
 const rl = readline.createInterface({
@@ -27,13 +27,13 @@ global.__filename = fileURLToPath(import.meta.url);
 global.__dirname = path.dirname(__filename);
 
 const Starting = async() => {
-    const { state, saveCreds } = await useMultiFileAuthState("session")
+    const { state, saveCreds } = await baileys.useMultiFileAuthState("session")
 	let sock = WAConnection({
 		printQRInTerminal: false,
 		logger,
 		auth: {
 			creds: state.creds,
-			keys: makeCacheableSignalKeyStore(state.keys, logger)
+			keys: baileys.makeCacheableSignalKeyStore(state.keys, logger)
 		},
         getMessage: async (key) => {
       if (store) {
@@ -41,13 +41,17 @@ const Starting = async() => {
 
       return msg?.message || "";
       }
-       return proto.Message.fromObject({})
+       return baileys.proto.Message.fromObject({})
     },
-		generateHighQualityLinkPreview: true,
-		version: [2, 3000, 1017531287],
-		browser: [ "Ubuntu", "Chrome", "20.0.04"],
-        msgRetryCounterCache,
-        
+      generateHighQualityLinkPreview: true,
+      version: [2, 3000, 1017531287],
+      browser: [ "Ubuntu", "Chrome", "20.0.04"],
+       msgRetryCounterCache,
+       syncFullHistory: true,
+       shouldSyncHistoryMessage: msg => {
+	console.log(`\x1b[32mMemuat Chat [${msg.progress}%]\x1b[39m`);
+	return !!msg.syncType;
+		}
 	})
     
     if (!sock.authState.creds.registered) {
@@ -95,14 +99,14 @@ const Starting = async() => {
     
     sock.ev.on('contacts.update', update => {
 		for (let contact of update) {
-			let id = jidNormalizedUser(contact.id);
+			let id = baileys.jidNormalizedUser(contact.id);
 			if (store && store.contacts) store.contacts[id] = { ...(store.contacts?.[id] || {}), ...(contact || {}) };
 		}
 	});
 
 	sock.ev.on('contacts.upsert', update => {
 		for (let contact of update) {
-			let id = jidNormalizedUser(contact.id);
+			let id = baileys.jidNormalizedUser(contact.id);
 			if (store && store.contacts) store.contacts[id] = { ...(contact || {}), isContact: true };
 		}
 	})
@@ -144,11 +148,11 @@ const Starting = async() => {
    
   setInterval(() => {
   const currentTime = Date.now()
-  sock.story = sock.story.filter(v => (currentTime - v.created_at) <= 172800000);
+  sock.story = sock.story.filter(v => (currentTime - v.created_at) <= 86400000);
    }, 10000)
    
   setInterval(async () => {
-	if (store.contacts) fs.writeFileSync(pathContacts, JSON.stringify(store.contacts));
+    if (store.contacts) fs.writeFileSync(pathContacts, JSON.stringify(store.contacts));
     if (sock.story) fs.writeFileSync(pathStories, JSON.stringify(sock.story))
     }, 10 * 1000)
     
