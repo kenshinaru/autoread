@@ -1,6 +1,16 @@
 import { msg } from "../lib/simple.js";
 import { removeAcents } from "../lib/functions.js";
 import setting from '../setting.js'
+import Spinnies from "spinnies";
+const spinnerConfig = {
+   interval: 80,
+   frames: ["❤️", "💙", "🤍", "💜"]
+};
+const spinnies = new Spinnies({
+   color: "green",
+   succeedColor: "green",
+   spinner: spinnerConfig
+})
 
 export async function message(sock, m, plugins, store) {
         m = await msg(sock, m);
@@ -8,13 +18,15 @@ export async function message(sock, m, plugins, store) {
         const prefixes = ["!", ".", "#", "/"];
         const isCmd = prefixes.some((prefix) => m.body.startsWith(prefix));
         const prefix = prefixes.find((prefix) => m.body.startsWith(prefix)) ? prefixes.find((prefix) => m.body.startsWith(prefix)) : "";
-        const command = removeAcents(
-    m.body
+        const command = removeAcents(m.body
         .slice(prefix ? prefix.length : 0) 
         .toLowerCase()
         .trim()
         .split(/ +/)[0]
         ).trim()
+       const args = m.body.trim().split(/ +/).slice(1);
+       const text = args.join(" ")
+            
        if (!setting.online) sock.sendPresenceUpdate('unavailable', m.from)
        if (setting.online) sock.sendPresenceUpdate('available', m.from)
        sock.storyJid = sock.storyJid ? sock.storyJid : [];
@@ -47,9 +59,14 @@ export async function message(sock, m, plugins, store) {
         created_at: new Date() * 1
         });
        }
-       console.log("- Name : ", m.pushName + "\n- command : ", command);
-        const args = m.body.trim().split(/ +/).slice(1);
-        const text = args.join(" ")
+       console.log(
+  `${chalk.bgBlack.bold(" ────✦─────✦─────✦───── ")}\n` +
+  `${chalk.bold.blue(" * Sender: ")} ${chalk.blueBright(m.sender)}\n` +
+  `${chalk.bold.blue(" * Command: ")} ${chalk.blueBright(command)}\n` +
+  `${chalk.bgBlack.bold(" ────✦─────✦─────✦───── ")}`
+        );
+        spinnies.add("waiting", {
+        text: "Waiting for Message..."});
         if (!m.key.fromMe) return
         for (const name in plugins) {
             const cmd = plugins[name];
