@@ -1,3 +1,12 @@
+/*
+  *  Script made with ❤️ by Luthfi Joestars
+  *  Github : kenshinaru
+  *  Telegram : t.me/kenshin
+  *  WhatsApp : wa.me/6281310994964
+  *  Instagram : @urheadfather_
+*/
+
+
 import pino from "pino";
 import path from "path";
 import fs from "node:fs";
