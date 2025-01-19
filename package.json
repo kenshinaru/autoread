@@ -15,6 +15,7 @@
   "description": "Bot Autoread Story WhatsApp",
   "dependencies": {
     "baileys": "npm:@neoxr/baileys@latest",
-    "chalk": "*"
+    "chalk": "*",
+    "spinnies": "^0.5.1",
   }
 }
