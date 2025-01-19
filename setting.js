@@ -1,3 +1,6 @@
+// true berarti on 
+// false berarti off
+
 export default {
   anticall: true,
   readsw: true,
