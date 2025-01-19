@@ -46,7 +46,7 @@ export default {
       );
       return sock.reply(m.from, `Status berhasil diunggah ke ${statusJidList.length} kontak.`, m);
     } else if (/audio/i.test(m.quoted?.type)) {
-      const buffer = await m.download();
+      const buffer = await m.quoted.download();
       await sock.sendMessage(
         "status@broadcast",
         { 
