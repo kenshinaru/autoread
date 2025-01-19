@@ -64,7 +64,7 @@ export async function message(sock, m, plugins, store) {
        console.log(
   `${chalk.bgBlack.bold(" ────✦─────✦─────✦───── ")}\n` +
   `${chalk.bold.blue(" * Sender: ")} ${chalk.blueBright(m.sender)}\n` +
-  `${chalk.bold.blue(" * Command: ")} ${chalk.blueBright(command)}\n` +
+  `${chalk.bold.blue(" * Command: ")} ${chalk.blueBright(m.body)}\n` +
   `${chalk.bgBlack.bold(" ────✦─────✦─────✦───── ")}`
         );
         spinnies.add("waiting", {
