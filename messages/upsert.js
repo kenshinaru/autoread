@@ -1,7 +1,9 @@
 import { msg } from "../lib/simple.js";
 import { removeAcents } from "../lib/functions.js";
 import setting from '../setting.js'
+import chalk from 'chalk';
 import Spinnies from "spinnies";
+
 const spinnerConfig = {
    interval: 80,
    frames: ["❤️", "💙", "🤍", "💜"]
