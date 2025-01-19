@@ -27,6 +27,8 @@ export default {
   anticall: true, // Anti Call
   readsw: true,   // Auto Read Story
   reactsw: false, // React otomatis
+  readchat: false, // read chat otomatis
+  autotyping: true, // auto mengetik jika ada pesan
   online: false,  // Status online
   emojis: ["❤️", "💛", "💚", "💙", "💜"], // Emoji reaksi
 };
