@@ -16,6 +16,6 @@
   "dependencies": {
     "baileys": "npm:@neoxr/baileys@latest",
     "chalk": "*",
-    "spinnies": "^0.5.1",
+    "spinnies": "^0.5.1"
   }
 }
