@@ -1,4 +1,5 @@
 export default {
+   name: 'listsw',
    command: ['listsw'],
    tags: 'owner',
    run: async (m, { sock }) => {
