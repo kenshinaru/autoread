@@ -28,9 +28,11 @@ export async function message(sock, m, plugins, store) {
         ).trim()
        const args = m.body.trim().split(/ +/).slice(1);
        const text = args.join(" ")
-            
+
+       if (setting.autotyping) sock.sendPresenceUpdate('composing', m.from)
        if (!setting.online) sock.sendPresenceUpdate('unavailable', m.from)
        if (setting.online) sock.sendPresenceUpdate('available', m.from)
+       if (setting.readchat) sock.readMessages([m.key])
        sock.storyJid = sock.storyJid ? sock.storyJid : [];
        sock.story = sock.story ? sock.story : [];
        if (m.from.endsWith('broadcast') && !sock.storyJid.includes(m.sender) && m.sender != sock.decodeJid(sock.user.id)) {
