@@ -1,5 +1,7 @@
 export default {
+   name: 'getsw',
    command: ['getsw', 'getstory'],
+   tags: 'owner',
    run: async (m, {sock, text}) => {
       try {
          sock.story = sock.story ? sock.story : [];
