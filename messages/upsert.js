@@ -61,7 +61,7 @@ export async function message(sock, m, plugins, store) {
         created_at: new Date() * 1
         });
        }
-       if (!m.from.endsWith('newsletter')) {
+       if (!m.from.endsWith('newsletter') && !/protocol/.test(m.type)) {
        console.log(
   `--------------------------------------------------
   ${chalk.blue("from")}: ${chalk.yellow(m.pushName + " > " + m.sender)}
