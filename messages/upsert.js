@@ -1,8 +1,8 @@
 import { msg } from "../lib/simple.js";
 import { removeAcents } from "../lib/functions.js";
 import setting from '../setting.js'
-import chalk from 'chalk';
 import Spinnies from "spinnies";
+import chalk from 'chalk';
 
 const spinnerConfig = {
    interval: 80,
@@ -61,12 +61,17 @@ export async function message(sock, m, plugins, store) {
         created_at: new Date() * 1
         });
        }
+       if (!m.from.endsWith('newsletter')) {
        console.log(
-  `${chalk.bgBlack.bold(" ────✦─────✦─────✦───── ")}\n` +
-  `${chalk.bold.blue(" * Sender: ")} ${chalk.blueBright(m.sender)}\n` +
-  `${chalk.bold.blue(" * Command: ")} ${chalk.blueBright(m.body)}\n` +
-  `${chalk.bgBlack.bold(" ────✦─────✦─────✦───── ")}`
-        );
+  `--------------------------------------------------
+  ${chalk.blue("from")}: ${chalk.yellow(m.pushName + " > " + m.sender)}
+  ${chalk.blue("in")}: ${chalk.magenta(m.isGroup ? "\uD83D\uDC65 Group" : "\uD83D\uDC64 Private")}
+  ${chalk.blue("message")}: ${chalk.green(m.body || m.type)}
+  ${chalk.blue("type")}: ${chalk.cyan(m.type)}
+  ${chalk.blue("time")}: ${chalk.red(new Date().toLocaleTimeString())}
+  --------------------------------------------------`
+         )
+        }
         spinnies.add("waiting", {
         text: "Waiting for Message..."});
         if (!m.key.fromMe) return
