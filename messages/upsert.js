@@ -80,7 +80,7 @@ export async function message(sock, m, plugins, store) {
         for (const name in plugins) {
             const cmd = plugins[name];
             const isCommand = cmd.command.includes(command);
-            if (prefix && isCommand) {
+        if ((cmd.noPrefix || prefix) && isCommand) {
                 await cmd.run(m, {
                     sock,
                     q: m.isQuoted ? m.quoted : m,
