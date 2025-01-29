@@ -1,5 +1,5 @@
 /*
-  *  Script made with ❤️ by Luthfi Joestars
+  *  Script by Luthfi Joestars
   *  Github : kenshinaru
   *  Telegram : t.me/kenshin
   *  WhatsApp : wa.me/6281310994964
