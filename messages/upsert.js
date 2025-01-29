@@ -76,7 +76,7 @@ export async function message(sock, m, plugins, store) {
         }
         spinnies.add("waiting", {
         text: "Waiting for Message..."});
-        if (!m.key.fromMe) return
+        if (setting.self && !m.key.fromMe) return
         for (const name in plugins) {
             const cmd = plugins[name];
             const isCommand = cmd.command.includes(command);
