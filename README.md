@@ -29,6 +29,7 @@ export default {
   reactsw: false, // React otomatis
   readchat: false, // read chat otomatis
   autotyping: true, // auto mengetik jika ada pesan
+  self: true, // mode self atau public
   online: false,  // Status online
   emojis: ["❤️", "💛", "💚", "💙", "💜"], // Emoji reaksi
 };
