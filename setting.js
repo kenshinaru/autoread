@@ -6,7 +6,7 @@ export default {
   readsw: true,
   reactsw: false,
   readchat: false,
-  autotyping: true,
+  autotyping: false,
   self: true,
   online: false,
   emoji: ["❤️", "💛", "💚", "💙", "💜"],
