@@ -49,13 +49,8 @@ const Starting = async() => {
       generateHighQualityLinkPreview: true,
       version: [2, 3000, 1017531287],
       browser: [ "Ubuntu", "Chrome", "20.0.04"],
-      msgRetryCounterCache,
-      syncFullHistory: true,
-      shouldSyncHistoryMessage: msg => {
-      console.log(`\x1b[32mMemuat Chat [${msg.progress}%]\x1b[39m`);
-	return !!msg.syncType;
-		}
-	})
+      msgRetryCounterCache
+      })
     
    if (setting.pairing && setting.pairing.state && !sock.authState.creds.registered) {
    var phoneNumber = setting.pairing.number
