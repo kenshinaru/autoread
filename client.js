@@ -81,8 +81,8 @@ const Starting = async() => {
 			if (lastDisconnect?.error?.output?.statusCode !== 401) {
 				Starting();
 			} else {
-				console.log("¡La sesion esta corrupta!");
-				fs.rmSync("auth_session", { recursive: true });
+				console.log("Menghapus session lama...");
+				fs.rmSync("session", { recursive: true });
 				Starting();
 			}
 		} else if (connection === "open") {
