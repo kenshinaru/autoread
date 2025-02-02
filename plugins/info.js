@@ -1,5 +1,5 @@
 export default {
-   name: ['sc', 'source', 'script'],
+   name: ['sc'],
    command: ['sc', 'source', 'script'],
    tags: 'main',
    run: async (m, { sock }) => {
