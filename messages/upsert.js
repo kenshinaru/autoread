@@ -46,7 +46,6 @@ export async function message(sock, m, plugins, store) {
         return setting.emoji[randomIndex];
        }
        if (setting.reactsw && m.from.endsWith('broadcast') && [...new Set(sock.storyJid)].includes(m.sender) && !/protocol/.test(m.type)) {
-       await sock.readMessages([m.key]);
        await sock.sendMessage('status@broadcast', {
         react: {
             text: getRandomEmoji(),
@@ -86,6 +85,7 @@ export async function message(sock, m, plugins, store) {
                     q: m.isQuoted ? m.quoted : m,
                     plugins,
                     command,
+                    setting,
                     store,
                     text,
                 });
