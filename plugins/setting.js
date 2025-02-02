@@ -3,7 +3,7 @@ import fs from 'fs';
 export default {
    name: ['anticall', 'readsw', 'reactsw', 'readchat', 'autotyping', 'self', 'online'],
    command: ['anticall', 'readsw', 'reactsw', 'readchat', 'autotyping', 'self', 'online'],
-   setting: 'setting',
+   tags: 'setting',
    run: async (m, { sock, text, command, setting }) => {
       const option = text.toLowerCase()
       if (!['on', 'off'].includes(option)) return sock.reply(m.from, `🚩 Enter on/off`, m)
