@@ -55,10 +55,10 @@ const Starting = async() => {
       generateHighQualityLinkPreview: true,
       version: [2, 3000, 1017531287],
       browser: [ "Ubuntu", "Chrome", "20.0.04"],
-       msgRetryCounterCache,
-       syncFullHistory: true,
-       shouldSyncHistoryMessage: msg => {
-	console.log(`\x1b[32mMemuat Chat [${msg.progress}%]\x1b[39m`);
+      msgRetryCounterCache,
+      syncFullHistory: true,
+      shouldSyncHistoryMessage: msg => {
+      console.log(`\x1b[32mMemuat Chat [${msg.progress}%]\x1b[39m`);
 	return !!msg.syncType;
 		}
 	})
@@ -74,19 +74,19 @@ const Starting = async() => {
     rl.close();
   }
     
-	sock.ev.on("creds.update", saveCreds);
+   sock.ev.on("creds.update", saveCreds);
 
-	sock.ev.on("connection.update", async ({ connection, lastDisconnect }) => {
-		if (connection === "close") {
-			if (lastDisconnect?.error?.output?.statusCode !== 401) {
-				Starting();
+   sock.ev.on("connection.update", async ({ connection, lastDisconnect }) => {
+	if (connection === "close") {
+	if (lastDisconnect?.error?.output?.statusCode !== 401) {
+			Starting();
 			} else {
-				console.log("Menghapus session lama...");
-				fs.rmSync("session", { recursive: true });
-				Starting();
+			console.log("Menghapus session lama...");
+			fs.rmSync("session", { recursive: true });
+			Starting();
 			}
-		} else if (connection === "open") {
-			console.log("Connected")
+	} else if (connection === "open") {
+	console.log(chalk.green('[INFO] Connected successfully!'))
             await sock.reply(
   sock.decodeJid(sock.user.id),
   `— *CONNECTION OPEN* —\n\nStatus:\n- Anticall : ${setting.anticall ? 'ON' : 'OFF'}\n- Autotyping : ${setting.autotyping ? 'ON' : 'OFF'}\n- Readchat : ${setting.readchat ? 'ON' : 'OFF'}\n- ReadSW : ${setting.readsw ? 'ON' : 'OFF'}\n- ReactSW : ${setting.reactsw ? 'ON' : 'OFF'}\n- Online : ${setting.online ? 'ON' : 'OFF'}`)
@@ -113,15 +113,15 @@ const Starting = async() => {
 		}
 	});
 
-	sock.ev.on('contacts.upsert', update => {
+    sock.ev.on('contacts.upsert', update => {
 		for (let contact of update) {
 			let id = baileys.jidNormalizedUser(contact.id);
 			if (store && store.contacts) store.contacts[id] = { ...(contact || {}), isContact: true };
 		}
 	})
 
-	sock.ev.on("messages.upsert", async ({ type, messages }) => {
-    if (type === "notify") {
+    sock.ev.on("messages.upsert", async ({ type, messages }) => {
+        if (type === "notify") {
         for (let m of messages) {
         if (m.message) {
                 m.message = m.message?.ephemeralMessage ? m.message.ephemeralMessage.message : m.message;
