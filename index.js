@@ -1,6 +1,7 @@
 import { spawn } from 'child_process';
 import { fileURLToPath } from 'url';
 import path from 'path';
+import http from 'http';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -31,4 +32,22 @@ function start() {
 		});
 }
 
+function checkServer() {
+    const healthService = http.createServer((request, response) => {
+        if (request.method === 'GET' && request.url === '/health') {
+            response.writeHead(200, { 'Content-Type': 'application/json' });
+            response.end(JSON.stringify({ status: 'OK' }));
+        } else {
+            response.writeHead(404, { 'Content-Type': 'application/json' });
+            response.end(JSON.stringify({ error: 'Not Found' }));
+        }
+    });
+
+    const PORT = 8000;
+    healthService.listen(PORT, () => {
+        console.log(`Health check server is running on port ${PORT}`);
+    });
+}
+
 start();
+checkServer()
