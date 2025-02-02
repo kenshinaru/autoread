@@ -15,7 +15,7 @@ Bot WhatsApp self untuk membaca status/story secara otomatis dengan berbagai fit
 - Eval / Exec
 
 ## 👾 Commmand
-- .upsw (upload story whatsapp)
+- .upsw (upload story whatsapp bisa tag gc)
 - .listsw (menampilkan list story tersimpan)
 - .getsw (mengambil salah satu story tersimpan)
 - =>, >, $ (exec dan eval command)
