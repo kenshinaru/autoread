@@ -10,4 +10,8 @@ export default {
   self: true,
   online: false,
   emoji: ["❤️", "💛", "💚", "💙", "💜"],
+  pairing: {
+    state: true,
+    number: 6281310994964
+  },
 }
