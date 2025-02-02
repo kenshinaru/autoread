@@ -36,7 +36,7 @@ export default {
          })
          .join('\n\n');
 
-      message += '\n\n> Lightweight autoread WhatsApp bot';
+      message += '\n\n> https://github.com/kenshinaru/autoread';
       return sock.sendMessage(m.from, { text: message }, { quoted: m });
    },
    location: __filename
