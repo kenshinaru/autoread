@@ -31,7 +31,11 @@ export default {
   autotyping: true, // auto mengetik jika ada pesan
   self: true, // mode self atau public
   online: false,  // Status online
-  emojis: ["❤️", "💛", "💚", "💙", "💜"], // Emoji reaksi
+  emoji: ["❤️", "💛", "💚", "💙", "💜"], // Emoji reaksi
+  pairing: {
+    state: true, // biarin true kalo mau pake pairing code
+    number: 6281310994964 // nomer yang akan dijadikan bot
+  },
 };
 ```
 
