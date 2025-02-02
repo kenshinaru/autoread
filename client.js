@@ -15,7 +15,6 @@ import { fileURLToPath } from "url";
 import { message } from "./messages/upsert.js";
 import { WAConnection } from "./lib/whatsapp.js";
 import baileys from "baileys";
-import readline from "readline"
 import setting from './setting.js'
 import NodeCache from "node-cache"
 
@@ -26,11 +25,6 @@ const logger = pino({ level: "silent" }).child({ level: "silent" })
 const store = baileys.makeInMemoryStore({
   logger
 });
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
-});
-const question = (text) => new Promise((resolve) => rl.question(text, resolve));
 
 global.__filename = fileURLToPath(import.meta.url);
 global.__dirname = path.dirname(__filename);
@@ -38,7 +32,7 @@ global.__dirname = path.dirname(__filename);
 const Starting = async() => {
     const { state, saveCreds } = await baileys.useMultiFileAuthState("session")
 	let sock = WAConnection({
-		printQRInTerminal: false,
+		printQRInTerminal: (setting.pairing && setting.pairing.state && setting.pairing.number) ? false : true,
 		logger,
 		auth: {
 			creds: state.creds,
@@ -63,15 +57,15 @@ const Starting = async() => {
 		}
 	})
     
-    if (!sock.authState.creds.registered) {
-    console.log(` ${chalk.redBright("Please type your WhatsApp number")}:`);
-    let phoneNumber = await question(`   ${chalk.cyan("- Number")}: `);
-    phoneNumber = phoneNumber.replace(/[^0-9]/g, "");
-    let code = await sock.requestPairingCode(phoneNumber);
-    code = code?.match(/.{1,4}/g)?.join("-") || code;
-    console.log(`  ${chalk.redBright("Your Pairing Code")}:`);
-    console.log(`   ${chalk.cyan("- Code")}: ${code}`);
-    rl.close();
+   if (setting.pairing && setting.pairing.state && !sock.authState.creds.registered) {
+   var phoneNumber = setting.pairing.number
+   setTimeout(async () => {
+      try {
+         let code = await sock.requestPairingCode(phoneNumber)
+         code = code.match(/.{1,4}/g)?.join("-") || code
+         console.log(chalk.black(chalk.bgGreen(` Your Pairing Code `)), ' : ' + chalk.black(chalk.white(code)))
+      } catch {}
+   }, 3000)
   }
     
    sock.ev.on("creds.update", saveCreds);
