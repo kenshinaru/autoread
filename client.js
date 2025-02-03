@@ -38,17 +38,17 @@ const Starting = async() => {
 			creds: state.creds,
 			keys: baileys.makeCacheableSignalKeyStore(state.keys, logger)
 		},
-        getMessage: async (key) => {
+     getMessage: async (key) => {
       if (store) {
       let msg = await store.loadMessage(key.remoteJid, key.id);
 
-      return msg?.message || "";
+      return msg?.message || "Hi bro";
       }
        return baileys.proto.Message.fromObject({})
     },
       generateHighQualityLinkPreview: true,
-      version: [2, 3000, 1017531287],
-      browser: [ "Ubuntu", "Chrome", "20.0.04"],
+      version: [2, 3000, 1019430034],
+      browser: ['Ubuntu', 'Firefox', '20.0.00'],
       msgRetryCounterCache
       })
     
