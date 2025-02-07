@@ -11,7 +11,7 @@ export default {
   online: false,
   emoji: ["❤️", "💛", "💚", "💙", "💜"],
   pairing: {
-    state: true,
-    number: 6281310994964
+    state: true, //biarin true kalo mau pake pairing
+    number: 6281310994967 //ganti pake nomer bot lu
   },
 }
