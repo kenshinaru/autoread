@@ -6,7 +6,7 @@ Bot WhatsApp self untuk membaca status/story secara otomatis dengan berbagai fit
 - Auto Read Story.
 - Anti Call (blokir panggilan).
 - Reaksi otomatis ke story.
-- Kontrol status online.
+- Status online.
 - Reaksi dengan emoji khusus.
 - Reaksi story && Read story
 - Upload story (image/text/audio)
@@ -17,6 +17,7 @@ Bot WhatsApp self untuk membaca status/story secara otomatis dengan berbagai fit
 ## 👾 Commmand
 - .upsw (upload story whatsapp bisa tag gc)
 - .listsw (menampilkan list story tersimpan)
+- .listgroups (menampilkan seluruh groups yang bot join)
 - .getsw (mengambil salah satu story tersimpan)
 - =>, >, $ (exec dan eval command)
 
