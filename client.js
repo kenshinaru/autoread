@@ -109,27 +109,39 @@ const Starting = async() => {
 		}
 	})
 
-    sock.ev.on("messages.upsert", async ({ type, messages }) => {
-        if (type === "notify") {
-        for (let m of messages) {
-        if (m.message) {
-                m.message = m.message?.ephemeralMessage ? m.message.ephemeralMessage.message : m.message;
-                let pluginFolder = path.join(__dirname, "plugins");
-                let pluginFilter = (filename) => /\.js$/.test(filename);
-                let plugins = {};
-                for (let filename of fs.readdirSync(pluginFolder).filter(pluginFilter)) {
-                    try {
-                        let modules = await import(path.join(pluginFolder, filename));
-                        plugins[filename] = modules.default;
-                    } catch (e) {
-                        delete plugins[filename];
-                    }
-                }
-                await message(sock, m, plugins, store);
+   sock.ev.on("messages.upsert", async ({ type, messages }) => {
+    
+    if (type !== "notify") return;    
+    let plugins = {};
+    let stack = [path.join(__dirname, "cmd")];
+    while (stack.length) {
+        let dir = stack.pop();
+        for (let file of fs.readdirSync(dir)) {
+            let fullPath = path.join(dir, file);
+            fs.statSync(fullPath).isDirectory() ? stack.push(fullPath) : fullPath.endsWith(".js") && (plugins[fullPath] = (await import(fullPath + "?t=" + Date.now())).default);
+        }
+    }
+
+    fs.watch(path.join(__dirname, "cmd"), { recursive: true }, async (event, filename) => {
+        if (filename) console.info(chalk.green(`[Info] File changed: ${filename}`));
+        plugins = {};
+        let stack = [path.join(__dirname, "cmd")];
+        while (stack.length) {
+            let dir = stack.pop();
+            for (let file of fs.readdirSync(dir)) {
+                let fullPath = path.join(dir, file);
+                fs.statSync(fullPath).isDirectory() ? stack.push(fullPath) : fullPath.endsWith(".js") && (plugins[fullPath] = (await import(fullPath + "?t=" + Date.now())).default);
             }
-          }
-       }
-   })
+        }
+    });
+
+    for (let m of messages) {
+        if (!m.message) continue;
+        m.message = m.message?.ephemeralMessage?.message || m.message;
+        if (store.groupMetadata && !Object.keys(store.groupMetadata).length) store.groupMetadata = await sock.groupFetchAllParticipating();
+        await message(sock, m, plugins, store);
+    }
+});
     
    sock.ev.on("call", async (calls) => {
   if (!setting.anticall) return;
