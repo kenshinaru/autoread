@@ -124,7 +124,7 @@ const Starting = async() => {
     
     if (type !== "notify") return;    
     let plugins = {};
-    let stack = [path.join(__dirname, "cmd")];
+    let stack = [path.join(__dirname, "plugins")];
     while (stack.length) {
         let dir = stack.pop();
         for (let file of fs.readdirSync(dir)) {
@@ -133,10 +133,10 @@ const Starting = async() => {
         }
     }
 
-    fs.watch(path.join(__dirname, "cmd"), { recursive: true }, async (event, filename) => {
+    fs.watch(path.join(__dirname, "plugins"), { recursive: true }, async (event, filename) => {
         if (filename) console.info(chalk.green(`[Info] File changed: ${filename}`));
         plugins = {};
-        let stack = [path.join(__dirname, "cmd")];
+        let stack = [path.join(__dirname, "plugins")];
         while (stack.length) {
             let dir = stack.pop();
             for (let file of fs.readdirSync(dir)) {
