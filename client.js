@@ -49,7 +49,18 @@ const Starting = async() => {
       generateHighQualityLinkPreview: true,
       version: [2, 3000, 1019430034],
       browser: ['Ubuntu', 'Firefox', '20.0.00'],
-      msgRetryCounterCache
+      msgRetryCounterCache,
+      syncFullHistory: true,
+      retryRequestDelayMs: 10,
+      transactionOpts: {
+      maxCommitRetries: 10,
+      delayBetweenTriesMs: 10
+      },
+      maxMsgRetryCount: 15,
+      appStateMacVerification: {
+      patch: true,
+      snapshot: true
+        },
       })
     
    if (setting.pairing && setting.pairing.state && !sock.authState.creds.registered) {
