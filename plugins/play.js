@@ -90,7 +90,7 @@ async function search(query, type = 'track', limit = 20) {
 export default {
    name: ['play'],
    command: ['putar', 'play'],
-   tags: 'owner',
+   tags: 'main',
    run: async (m, { sock, text, prefix, command }) => {
       try {
          if (!text) return sock.reply(m.from, `Contoh: ${prefix + command} lathi`, m);
