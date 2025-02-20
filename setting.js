@@ -9,6 +9,7 @@ export default {
   autotyping: false,
   self: true,
   online: false,
+  blacklist: [],
   emoji: ["❤️", "💛", "💚", "💙", "💜"],
   pairing: {
     state: true, //biarin true kalo mau pake pairing
