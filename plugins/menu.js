@@ -3,41 +3,45 @@ export default {
    command: ['menu'],
    tags: 'main',
    run: async (m, { sock, plugins }) => {
-      const categories = {};
-      const commands = [];
+    try {
+      const categories = Object.values(plugins).reduce((acc, menu) => {
+         if (!menu.tags) return acc;
+         const cmds = Array.isArray(menu.name) ? menu.name : [menu.name];
+         acc[menu.tags] = acc[menu.tags] || new Set();
+         cmds.forEach(cmd => acc[menu.tags].add(cmd));
+         return acc;
+      }, {});
 
-      Object.values(plugins).forEach(menu => {
-         if (!menu.tags) return;
-
-         switch (menu.name?.constructor.name) {
-            case 'Array':
-               commands.push(...menu.name);
-               break;
-            case 'String':
-               commands.push(menu.name);
-               break;
-         }
-
-         categories[menu.tags] = categories[menu.tags] || new Set();
-         const menuCommands = menu.name?.constructor.name === 'Array' ? menu.name : [menu.name];
-         menuCommands.forEach(cmd => categories[menu.tags].add(cmd));
-      });
-
-      let message = "Halo! Berikut adalah daftar menu yang tersedia:\n\n";
-      message += Object.keys(categories)
-         .sort()
-         .map(category => {
-            const commands = [...categories[category]]
-               .sort()
-               .map((cmd, i, arr) =>
+      let message = "Halo! Berikut adalah daftar menu yang tersedia:\n\n" +
+         Object.entries(categories)
+            .sort()
+            .map(([category, cmds]) =>
+               `🔹 \`${category.toUpperCase()}\`\n` + 
+               [...cmds].sort().map((cmd, i, arr) => 
                   ` ${i === arr.length - 1 ? '└' : '├'} ${cmd}`
-               ).join('\n');
-            return `🔹 \`${category.toUpperCase()}\`\n${commands}`;
-         })
-         .join('\n\n');
+               ).join('\n')
+            ).join('\n\n') + '\n\n> https://github.com/kenshinaru/autoread';
 
-      message += '\n\n> https://github.com/kenshinaru/autoread';
-      return sock.sendMessage(m.from, { text: message }, { quoted: m });
+      
+      return m.reply({
+         text: message.trim(), 
+         contextInfo: {
+            mentionedJid: sock.parseMentions(message),
+            isForwarded: true,
+            externalAdReply: {
+               title: `Hi, ${m.pushName}`,
+               thumbnailUrl: 'https://files.catbox.moe/26b7a0.png',
+               sourceUrl: 'https://github.com/kenshinaru/autoread',
+               mediaType: 1,
+               previewType: 0,
+               renderLargerThumbnail: true,
+            },
+         },
+      })
+      } catch (e) {
+        console.log(e)
+        m.reply(e)
+        }
    },
    location: __filename
 };
