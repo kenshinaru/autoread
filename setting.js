@@ -9,6 +9,7 @@ export default {
   autotyping: false,
   self: true,
   online: false,
+  prefix: true,
   blacklist: [],
   emoji: ["❤️", "💛", "💚", "💙", "💜"],
   pairing: {
