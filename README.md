@@ -33,7 +33,7 @@ export default {
   self: true, // mode self atau public
   online: false,  // Status online
   prefix: true, //biarin true jika ingin pake prefix
-  blacklist: [] //pengecualian/skip untuk readstory/reactstory
+  blacklist: [], //pengecualian/skip untuk readstory/reactstory
   emoji: ["❤️", "💛", "💚", "💙", "💜"], // Emoji reaksi
   pairing: {
     state: true, // biarin true kalo mau pake pairing code
