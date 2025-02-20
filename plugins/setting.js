@@ -1,8 +1,8 @@
 import fs from 'fs';
 
 export default {
-   name: ['anticall', 'readsw', 'reactsw', 'readchat', 'autotyping', 'self', 'online', 'blacklist'],
-   command: ['anticall', 'readsw', 'reactsw', 'readchat', 'autotyping', 'self', 'online', '+blacklist', '-blacklist'],
+   name: ['anticall', 'prefix', 'readsw', 'reactsw', 'readchat', 'autotyping', 'self', 'online', 'blacklist'],
+   command: ['anticall', 'prefix', 'readsw', 'reactsw', 'readchat', 'autotyping', 'self', 'online', '+blacklist', '-blacklist'],
    tags: 'setting',
    run: async (m, { sock, text, command, setting }) => {
       if (command === '+blacklist' || command === '-blacklist') {
