@@ -35,33 +35,40 @@ export async function message(sock, m, plugins, store) {
        if (setting.readchat) sock.readMessages([m.key])
        sock.storyJid = sock.storyJid ? sock.storyJid : [];
        sock.story = sock.story ? sock.story : [];
+
        if (m.from.endsWith('broadcast') && !sock.storyJid.includes(m.sender) && m.sender != sock.decodeJid(sock.user.id)) {
-    sock.storyJid.push(m.sender);
-         }
+       sock.storyJid.push(m.sender);
+       }
+
+       if (!(setting.blacklist && setting.blacklist.includes(m.sender.split('@')[0]))) {
        if (setting.readsw && m.from.endsWith('broadcast') && !/protocol/.test(m.type)) {
-    await sock.readMessages([m.key]);
-         }
-       function getRandomEmoji() {
-        const randomIndex = Math.floor(Math.random() * setting.emoji.length);
-        return setting.emoji[randomIndex];
+        await sock.readMessages([m.key]);
        }
+
        if (setting.reactsw && m.from.endsWith('broadcast') && [...new Set(sock.storyJid)].includes(m.sender) && !/protocol/.test(m.type)) {
-       await sock.sendMessage('status@broadcast', {
-        react: {
-            text: getRandomEmoji(),
-            key: m.key
+        await sock.sendMessage('status@broadcast', {
+            react: {
+                text: getRandomEmoji(),
+                key: m.key
+            }
+        }, {
+            statusJidList: [m.key.participant]
+             });
            }
-         }, {
-        statusJidList: [m.key.participant]
-        })
-      }
-      if (m.from.endsWith('broadcast') && !/protocol/.test(m.type)) {
-    sock.story.push({
-        jid: m.key.participant,
-        msg: m,
-        created_at: new Date() * 1
-        });
-       }
+        }
+
+         function getRandomEmoji() {
+          const randomIndex = Math.floor(Math.random() * setting.emoji.length);
+          return setting.emoji[randomIndex];
+        }
+
+       if (m.from.endsWith('broadcast') && !/protocol/.test(m.type)) {
+         sock.story.push({
+           jid: m.key.participant,
+           msg: m,
+           created_at: new Date() * 1
+           });
+         }
        if (!m.from.endsWith('newsletter') && !/protocol/.test(m.type)) {
        console.log(
   `--------------------------------------------------
