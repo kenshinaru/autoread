@@ -80,6 +80,11 @@ export async function message(sock, m, plugins, store) {
             const cmd = plugins[name];
             const isCommand = cmd.command.includes(command);
         if ((cmd.noPrefix || prefix) && isCommand) {
+          if (cmd.owner && !m.key.fromMe) {
+            m.reply('Fitur ini hanya untuk owner');
+            continue;
+          }
+          if (cmd.wait) sock.sendMessage(m.from, { react: { text: '🕒', key: m.key }})
                 await cmd.run(m, {
                     sock,
                     q: m.isQuoted ? m.quoted : m,
