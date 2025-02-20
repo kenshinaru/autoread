@@ -3,7 +3,7 @@ import fs from 'fs';
 export default {
    name: ['anticall', 'prefix', 'readsw', 'reactsw', 'readchat', 'autotyping', 'self', 'online', 'blacklist'],
    command: ['anticall', 'prefix', 'readsw', 'reactsw', 'readchat', 'autotyping', 'self', 'online', '+blacklist', '-blacklist'],
-   tags: 'setting',
+   tags: 'on/off',
    run: async (m, { sock, text, command, setting }) => {
       if (command === '+blacklist' || command === '-blacklist') {
          if (!text) return sock.reply(m.from, `Masukkan nomor yang ingin ${command === '+blacklist' ? 'ditambahkan' : 'dihapus'} dari blacklist.`, m);
