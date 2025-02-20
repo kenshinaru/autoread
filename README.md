@@ -32,6 +32,7 @@ export default {
   autotyping: true, // auto mengetik jika ada pesan
   self: true, // mode self atau public
   online: false,  // Status online
+  blacklist: [] //pengecualian/skip untuk readstory/reactstory
   emoji: ["❤️", "💛", "💚", "💙", "💜"], // Emoji reaksi
   pairing: {
     state: true, // biarin true kalo mau pake pairing code
