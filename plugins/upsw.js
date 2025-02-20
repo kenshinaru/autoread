@@ -1,7 +1,7 @@
 export default {
   name: ["upsw"],
   command: ["upsw"],
-  setting: "owner",
+  tags: "owner",
   wait: true,
   run: async (m, { sock, text, q, store }) => {
     if (!text) return sock.reply(m.from, "Masukkan teks atau media untuk diunggah.\n\n📌 *Cara Penggunaan:*\n\n➤ *Upload ke Grup (Tag Grup)*\n    `upsw 628xxxxxxx@g.us Pesan Anda`\n\n➤ *Upload ke Grup tanpa Notif*\n    `upsw 628xxxxxxx@g.us Pesan Anda --silent`\n\n➤ *Upload ke Status Pribadi*\n    `upsw Pesan Anda`\n\n➤ *Upload dengan Media*\n    (Kirim media dengan caption)\n    `upsw 628xxxxxxx@g.us Pesan Anda`", m);
