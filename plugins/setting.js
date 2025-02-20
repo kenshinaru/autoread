@@ -3,7 +3,7 @@ import fs from 'fs';
 export default {
    name: ['anticall', 'prefix', 'readsw', 'reactsw', 'readchat', 'autotyping', 'self', 'online'],
    command: ['anticall', 'prefix', 'readsw', 'reactsw', 'readchat', 'autotyping', 'self', 'online'],
-   tags: 'setting',
+   tags: 'on/off',
    run: async (m, { sock, text, command, setting }) => {
       if (!text) {
          let allStatus = Object.keys(setting)
