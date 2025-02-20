@@ -1,5 +1,5 @@
 export default {
-   name: ['listgroup'],
+   name: ['listgroups'],
    command: ['groups', 'listgroups'],
    tags: 'owner',
    run: async (m, { sock }) => {
