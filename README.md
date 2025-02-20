@@ -32,7 +32,7 @@ export default {
   autotyping: true, // auto mengetik jika ada pesan
   self: true, // mode self atau public
   online: false,  // Status online
-  prefix: true //biarin true jika ingin pake prefix
+  prefix: true, //biarin true jika ingin pake prefix
   blacklist: [] //pengecualian/skip untuk readstory/reactstory
   emoji: ["❤️", "💛", "💚", "💙", "💜"], // Emoji reaksi
   pairing: {
