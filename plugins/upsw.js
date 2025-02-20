@@ -32,8 +32,10 @@ export default {
       return sock.reply(m.from, `Story berhasil diunggah ke ${jids.length} grup, dengan total ${totalMembers} anggota.`, m);
     }
 
-    const statusJidList = Object.values(store.contacts).map((c) => c?.id).filter((id) => id?.endsWith("@s.whatsapp.net"));
-
+    const statusJidList = [
+      sock.decodeJid(sock.user.id),
+      ...Object.values(store.contacts).map((c) => c?.id).filter((id) => id?.endsWith("@s.whatsapp.net"));
+    ]
     await sock.uploadStory(
       statusJidList,
       q.isMedia ? { [mime]: await q.download(), caption } : { text, backgroundColor: getRandomHexColor(), font: Math.floor(Math.random() * 9) }
