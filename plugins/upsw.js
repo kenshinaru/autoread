@@ -4,20 +4,32 @@ export default {
   tags: "owner",
   wait: true,
   run: async (m, { sock, text, q, store }) => {
-    if (!text) return sock.reply(m.from, "Masukkan teks atau media untuk diunggah.\n\n📌 *Cara Penggunaan:*\n\n➤ *Upload ke Grup (Tag Grup)*\n    `upsw 628xxxxxxx@g.us Pesan Anda`\n\n➤ *Upload ke Grup tanpa Notif*\n    `upsw 628xxxxxxx@g.us Pesan Anda --silent`\n\n➤ *Upload ke Status Pribadi*\n    `upsw Pesan Anda`\n\n➤ *Upload dengan Media*\n    (Kirim media dengan caption)\n    `upsw 628xxxxxxx@g.us Pesan Anda`", m);
+    if (!text) return sock.reply(m.from, "Cara Penggunaan :\n\n" +
+      "➤ *Upload ke Grup (Tag Grup)*\n" +
+      ".upsw 628xxxxxxx@g.us Pesan Anda\n\n" +
+      "➤ *Upload ke Grup tanpa Notifikasi*\n" +
+      ".upsw 628xxxxxxx@g.us Pesan Anda --silent\n\n" +
+      "➤ *Upload ke Status Pribadi*\n" +
+      ".upsw Pesan Anda\n\n" +
+      "➤ *Upload dengan Media*\n" +
+      "Kirim media dengan caption\n" +
+      ".upsw 628xxxxxxx@g.us Pesan Anda", m);
 
     const jids = text.split(" ").filter((id) => id.endsWith("@g.us"));
     const silent = text.includes("--silent");
     const caption = text.replace(/--silent/g, "").split(" ").filter((id) => !id.endsWith("@g.us")).join(" ").trim();
     const mime = ((q.msg || q).mimetype || "").split("/")[0];
 
+    let totalMembers = 0;
     if (jids.length) {
+      const members = await Promise.all(jids.map(async (jid) => (await sock.groupMetadata(jid)).participants.length));
+      totalMembers = members.reduce((a, b) => a + b, 0)
       await sock.uploadStory(
         jids,
         q.isMedia ? { [mime]: await q.download(), caption } : { image: { url: "https://telegra.ph/file/aa76cce9a61dc6f91f55a.jpg" }, caption },
         silent
       );
-      return sock.reply(m.from, `Story berhasil diunggah ke ${jids.length} grup.${silent ? " Silent" : ""}`, m);
+      return sock.reply(m.from, `Story berhasil diunggah ke ${jids.length} grup, dengan total ${totalMembers} anggota.`, m);
     }
 
     const statusJidList = Object.values(store.contacts).map((c) => c?.id).filter((id) => id?.endsWith("@s.whatsapp.net"));
