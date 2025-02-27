@@ -29,7 +29,19 @@ const store = baileys.makeInMemoryStore({
 
 global.__filename = fileURLToPath(import.meta.url);
 global.__dirname = path.dirname(__filename);
+let plugins = {};
 
+const loadPlugins = async () => {
+        plugins = {};
+        let stack = [path.join(__dirname, "plugins")];
+        while (stack.length) {
+            let dir = stack.pop();
+            for (let file of fs.readdirSync(dir)) {
+                let fullPath = path.join(dir, file);
+                fs.statSync(fullPath).isDirectory() ? stack.push(fullPath) : fullPath.endsWith(".js") && (plugins[fullPath] = (await import(fullPath + "?t=" + Date.now())).default);
+            }
+        }
+};
 const Starting = async() => {
     const { state, saveCreds } = await baileys.useMultiFileAuthState("session")
 	let sock = WAConnection({
@@ -87,10 +99,8 @@ const Starting = async() => {
 			Starting();
 			}
 	} else if (connection === "open") {
+	     await loadPlugins()
 	console.log(chalk.green('[INFO] Connected successfully!'))
-            await sock.reply(
-  sock.decodeJid(sock.user.id),
-  `— *CONNECTION OPEN* —\n\nStatus:\n- Anticall : ${setting.anticall ? 'ON' : 'OFF'}\n- Autotyping : ${setting.autotyping ? 'ON' : 'OFF'}\n- Prefix : ${setting.prefix ? 'ON' : 'OFF'}\n- Readchat : ${setting.readchat ? 'ON' : 'OFF'}\n- ReadSW : ${setting.readsw ? 'ON' : 'OFF'}\n- ReactSW : ${setting.reactsw ? 'ON' : 'OFF'}\n- Online : ${setting.online ? 'ON' : 'OFF'}`)
 		}
 	})
 
@@ -123,27 +133,6 @@ const Starting = async() => {
 
    sock.ev.on("messages.upsert", async ({ type, messages }) => {
     if (type !== "notify") return;    
-
-    let plugins = {};
-    const loadPlugins = async () => {
-        plugins = {};
-        let stack = [path.join(__dirname, "plugins")];
-        while (stack.length) {
-            let dir = stack.pop();
-            for (let file of fs.readdirSync(dir)) {
-                let fullPath = path.join(dir, file);
-                fs.statSync(fullPath).isDirectory() ? stack.push(fullPath) : fullPath.endsWith(".js") && (plugins[fullPath] = (await import(fullPath + "?t=" + Date.now())).default);
-            }
-        }
-    };
-
-    await loadPlugins();
-
-    chokidar.watch(path.join(__dirname, "plugins")).on("change", async (file) => {
-        console.info(chalk.green(`[Info] File changed: ${file}`));
-        await loadPlugins();
-    });
-
     for (let m of messages) {
         if (!m.message) continue;
         m.message = m.message?.ephemeralMessage?.message || m.message;
@@ -153,18 +142,23 @@ const Starting = async() => {
 });
     
    sock.ev.on("call", async (calls) => {
-  if (!setting.anticall) return;
-  for (const call of calls) {
-    if (call.status === "offer") {
-      await sock.sendMessage(call.from, {
-        text: "Maaf akun ini sedang tidak bisa menjawab panggilan anda.",
-        mentions: [call.from],
-      });
-      await sock.rejectCall(call.id, call.from);
-    }
-  }
-})
-   
+       if (!setting.anticall) return;
+          for (const call of calls) {
+       if (call.status === "offer") {
+         await sock.sendMessage(call.from, {
+           text: "Maaf akun ini sedang tidak bisa menjawab panggilan anda.",
+           mentions: [call.from],
+            });
+         await sock.rejectCall(call.id, call.from);
+          }
+       }
+   })
+
+  chokidar.watch(path.join(__dirname, "plugins")).on("change", async (file) => {
+        console.info(chalk.green(`[Info] File changed: ${file}`));
+        await loadPlugins();
+  });
+
   setInterval(() => {
   const currentTime = Date.now()
   sock.story = sock.story.filter(v => (currentTime - v.created_at) <= 86400000);
