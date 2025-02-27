@@ -17,6 +17,7 @@ import { WAConnection } from "./lib/whatsapp.js";
 import baileys from "baileys";
 import setting from './setting.js'
 import NodeCache from "node-cache"
+import chokidar from "chokidar";
 
 const pathStories = `./session/stories.json`
 const pathContacts = `./session/contacts.json`
@@ -121,20 +122,10 @@ const Starting = async() => {
 	})
 
    sock.ev.on("messages.upsert", async ({ type, messages }) => {
-    
     if (type !== "notify") return;    
-    let plugins = {};
-    let stack = [path.join(__dirname, "plugins")];
-    while (stack.length) {
-        let dir = stack.pop();
-        for (let file of fs.readdirSync(dir)) {
-            let fullPath = path.join(dir, file);
-            fs.statSync(fullPath).isDirectory() ? stack.push(fullPath) : fullPath.endsWith(".js") && (plugins[fullPath] = (await import(fullPath + "?t=" + Date.now())).default);
-        }
-    }
 
-    fs.watch(path.join(__dirname, "plugins"), { recursive: true }, async (event, filename) => {
-        if (filename) console.info(chalk.green(`[Info] File changed: ${filename}`));
+    let plugins = {};
+    const loadPlugins = async () => {
         plugins = {};
         let stack = [path.join(__dirname, "plugins")];
         while (stack.length) {
@@ -144,6 +135,13 @@ const Starting = async() => {
                 fs.statSync(fullPath).isDirectory() ? stack.push(fullPath) : fullPath.endsWith(".js") && (plugins[fullPath] = (await import(fullPath + "?t=" + Date.now())).default);
             }
         }
+    };
+
+    await loadPlugins();
+
+    chokidar.watch(path.join(__dirname, "plugins")).on("change", async (file) => {
+        console.info(chalk.green(`[Info] File changed: ${file}`));
+        await loadPlugins();
     });
 
     for (let m of messages) {
