@@ -16,6 +16,7 @@
   "dependencies": {
     "baileys": "npm:@neoxr/baileys@latest",
     "chalk": "*",
-    "chokidar": "*"
+    "chokidar": "*",
+    "node-cache": "*",
   }
 }
