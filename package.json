@@ -17,6 +17,6 @@
     "baileys": "npm:@neoxr/baileys@latest",
     "chalk": "*",
     "chokidar": "*",
-    "node-cache": "*",
+    "node-cache": "*"
   }
 }
