@@ -60,7 +60,7 @@ const Starting = async() => {
        return baileys.proto.Message.fromObject({})
     },
       generateHighQualityLinkPreview: true,
-      version: [2, 3000, 1019430034],
+      version: [2, 3000, 1022545672],
       browser: ['Ubuntu', 'Firefox', '20.0.00'],
       msgRetryCounterCache,
       syncFullHistory: true,
