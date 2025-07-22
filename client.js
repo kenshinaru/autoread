@@ -1,7 +1,7 @@
 /*
   *  Script by Luthfi Joestars
   *  Github : kenshinaru
-  *  Telegram : t.me/kenshin
+  *  Telegram : t.me/kenstucky
   *  WhatsApp : wa.me/6281310994964
   *  Instagram : @urheadfather_
 */
